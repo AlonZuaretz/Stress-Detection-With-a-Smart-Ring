@@ -1,4 +1,4 @@
-function [y] = preprocess(x, t, fs, order, cutoff_freq)
+function [y] = preprocess(x, fs, order, cutoff_freq)
 
 % Filter the data:
 normalized_freq = cutoff_freq/(fs/2);

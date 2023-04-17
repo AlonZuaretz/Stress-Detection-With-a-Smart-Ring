@@ -1,0 +1,26 @@
+% Constant Parameters:
+fs = 3; %Hertz
+
+
+
+% Fetch data:
+
+% t =
+% raw = 
+% n = length(t);
+
+% Create parameters for fourier transform mainly for plotting
+
+% nfft = nextpow2(n);
+% f_vec = (fs/nfft)*(-nfft/2:(nfft/2-1));
+
+
+% Preprocess:
+order = 128;
+cutoff_freq = 0.5;
+
+preproccesed_data = preprocess(raw,t,fs,order,cutoff_freq);
+
+
+
+% Recieve Tonic and Phasic components:
