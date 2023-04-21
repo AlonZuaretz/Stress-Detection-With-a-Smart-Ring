@@ -30,6 +30,24 @@ preproccesed_data = preprocess(raw,fs,order,cutoff_freq);
 % Recieve Tonic and Phasic components:
 [tonic, phasic] = tonic_phasic_filter(preproccesed_data,fs);
 
+%% plotting:
+%suspected times of stimulation:
+tStim = datetime('12:46:38','InputFormat','HH:mm,ss');
+figure;
+x = tonic;
+y = phasic;
+
+ax1 = axes(gcf);
+plot(ax1,t,x,t,y);
+
+ax2 = axes(gcf);
+plot(ax2,Time,x,Time,y);
+
+ax2.XAxisLocation = 'Top';
+ax1.YAxis.Visible = 'off';
+xlabel(ax1,'Time (seconds)'); 
+xlabel(ax2,'Time of day'); 
+legend('tonic', 'phasic');
 
 % plot the fft for a wanted signal:
 x = preproccesed_data;
@@ -38,22 +56,3 @@ X = fftshift(fft(x,NFFT));
 % figure;
 % plot(fvec,abs(X));
 
-%% plotting:
-figure;
-x = tonic;
-y = phasic;
-
-ax1 = axes(gcf);
-plot(ax1,t,x);
-hold on
-plot(ax1,t,y);
-
-ax2 = axes(gcf);
-plot(ax2,Time,x);
-hold on
-plot(ax2,Time,y);
-ax2.XAxisLocation = 'Top';
-
-xlabel(ax1,'Time (seconds)'); 
-xlabel(ax2,'Time of day'); 
-legend('tonic', )
