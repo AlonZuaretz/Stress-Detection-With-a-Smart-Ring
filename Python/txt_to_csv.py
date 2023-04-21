@@ -4,12 +4,12 @@ import os
 
 path_to_txt = input("please enter path to ring txt file: ")
 # C:/Users/yossi/Desktop/MMDataF5B57A688F87_6.txt
-# C:/Users/alonz/OneDrive - Technion/תואר/סמסטר 6/פרויקט/project - Stress Detection with a Smart Ring/Ring Samples/MMDataF5B57A688F87_1.txt
+# C:/Users/alonz/OneDrive - Technion/תואר/סמסטר 6/פרויקט/project - Stress Detection with a Smart Ring/Ring Samples/MMDataF5B57A688F87.txt
 txt_file_name = (os.path.basename(path_to_txt)).replace('.txt','')
 # maybe we need to change name
 path_to_dir = input("please enter path to directory: ")
 # C:/Lilach/Technion/Project A
-# C:/Users/alonz/OneDrive - Technion/תואר/סמסטר 6/פרויקט
+# C:/Users/alonz/OneDrive - Technion/תואר/סמסטר 6/פרויקט/project - Stress Detection with a Smart Ring/Ring Samples/CSV
 ring_ID = 'Ring ID: F5:B5:7A:68:8F:87\n'
 outputs = []
 section_num = 0
