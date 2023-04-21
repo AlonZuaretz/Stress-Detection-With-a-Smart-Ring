@@ -14,7 +14,7 @@ fs = 3; %Hertz
 
 
 % Preprocess:
-order = 128;
+order = 256;
 cutoff_freq = 0.5;
 
 preproccesed_data = preprocess(raw,fs,order,cutoff_freq);
