@@ -36,14 +36,16 @@ preproccesed_data = preprocess(raw,fs,order,cutoff_freq);
 stimulationTimes = ['12:46:38'; '13:01:11'];
 tStim = timeofday(datetime(stimulationTimes,'InputFormat','HH:mm:ss'));
 figure;
-x = tonic;
-y = phasic;
+% Plot any 3 vectors (change legend accordignly):
+x = preproccesed_data;
+y = raw;
+z = tonic;
 
 ax1 = axes(gcf);
-plot(ax1,t,x,t,y);
+plot(ax1,t,x,t,y,t,z);
 
 ax2 = axes(gcf);
-plot(ax2,Time,x,Time,y);
+plot(ax2,Time,x,Time,y,Time,z);
 
 xline(ax2,tStim);
 
@@ -51,7 +53,8 @@ ax2.XAxisLocation = 'Top';
 ax1.YAxis.Visible = 'off';
 xlabel(ax1,'Time (seconds)'); 
 xlabel(ax2,'Time of day'); 
-legend('tonic', 'phasic');
+
+legend('raw', 'phasic','tonic');
 
 
 % plot the fft for a wanted signal:
