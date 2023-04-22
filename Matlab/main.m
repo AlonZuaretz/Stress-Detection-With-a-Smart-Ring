@@ -5,7 +5,7 @@ fs = 3; %Hertz
 if ~exist('T', 'var')
     T = readtable(['C:\Users\alonz\OneDrive - Technion\תואר\סמסטר 6\פרויקט\' ...
         'project - Stress Detection with a Smart Ring\' ...
-        'Ring Samples\CSV\MMDataF5B57A688F87_4_27.csv']);
+        'Ring Samples\CSV\MMDataF5B57A688F87_3_18.csv']);
     
     Time = timeofday(T.date_time);
     secsFromStart = T.time_sec_;
@@ -24,11 +24,11 @@ fvec = (fs/NFFT)*(-NFFT/2:(NFFT/2-1));
 
 %preprocess parameters:
 order = 64;
-cutoff_freq = 0.5; % Hz
-preproccesed_data = preprocess(raw,fs,order,cutoff_freq);
+cutoffFreq = 0.5; % Hz
+preproccesedData = preprocess(raw,fs,order,cutoffFreq);
 
 % Recieve Tonic and Phasic components:
-[tonic, phasic] = tonicPhasicFilter(preproccesed_data,fs);
+[tonic, phasic] = tonicPhasicFilter(preproccesedData,fs);
 
 
 %% plotting:
@@ -37,7 +37,7 @@ stimulationTimes = [];%['12:46:38'; '13:01:11'];
 
 figure;
 % Plot any 3 vectors (change legend accordignly):
-x1 = preproccesed_data;
+x1 = preproccesedData;
 x2 = phasic;
 x3 = tonic;
 
