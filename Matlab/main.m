@@ -5,7 +5,7 @@ fs = 3; %Hertz
 if ~exist('T', 'var')
     T = readtable(['C:\Users\alonz\OneDrive - Technion\תואר\סמסטר 6\פרויקט\' ...
         'project - Stress Detection with a Smart Ring\' ...
-        'Ring Samples\CSV\MMDataF5B57A688F87_3_18.csv']);
+        'Ring Samples\CSV\MMDataF5B57A688F87_4_20.csv']);
     
     Time = timeofday(T.date_time);
     secsFromStart = T.time_sec_;
@@ -30,6 +30,9 @@ preproccesedData = preprocess(raw,fs,order,cutoffFreq);
 % Recieve Tonic and Phasic components:
 [tonic, phasic] = tonicPhasicFilter(preproccesedData,fs);
 
+
+%find size of acceleration vector for each sample:
+accNorm = normalize(sqrt(acc(:,1).^2+acc(:,2).^2+acc(:,3).^3));
 
 %% plotting:
 %suspected times of stimulation:
