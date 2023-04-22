@@ -5,10 +5,10 @@ fs = 3; %Hertz
 if ~exist('T', 'var')
     T = readtable(['C:\Users\alonz\OneDrive - Technion\תואר\סמסטר 6\פרויקט\' ...
         'project - Stress Detection with a Smart Ring\' ...
-        'Ring Samples\CSV\MMDataF5B57A688F87_3_15.csv']);
+        'Ring Samples\CSV\MMDataF5B57A688F87_4_27.csv']);
     
     Time = timeofday(T.date_time);
-    t = T.time_sec_;
+    secsFromStart = T.time_sec_;
     raw = T.raw;
     acc = [T.ax, T.ay, T.az];
     st = T.st;
@@ -18,48 +18,44 @@ if ~exist('T', 'var')
 end
 
 %% Preprocess:
-N = length(t);
+N = length(secsFromStart);
 NFFT = 2^nextpow2(N);
 fvec = (fs/NFFT)*(-NFFT/2:(NFFT/2-1));
 
 %preprocess parameters:
-order = 512;
-cutoff_freq = 0.5;
+order = 64;
+cutoff_freq = 0.5; % Hz
 preproccesed_data = preprocess(raw,fs,order,cutoff_freq);
 
 % Recieve Tonic and Phasic components:
-[tonic, phasic] = tonic_phasic_filter(preproccesed_data,fs);
+[tonic, phasic] = tonicPhasicFilter(preproccesed_data,fs);
 
 
 %% plotting:
 %suspected times of stimulation:
-stimulationTimes = ['12:46:38'; '13:01:11'];
-tStim = timeofday(datetime(stimulationTimes,'InputFormat','HH:mm:ss'));
+stimulationTimes = [];%['12:46:38'; '13:01:11'];
+
 figure;
 % Plot any 3 vectors (change legend accordignly):
-x = preproccesed_data;
-y = raw;
-z = tonic;
+x1 = preproccesed_data;
+x2 = phasic;
+x3 = tonic;
 
-ax1 = axes(gcf);
-plot(ax1,t,x,t,y,t,z);
-
-ax2 = axes(gcf);
-plot(ax2,Time,x,Time,y,Time,z);
-
-xline(ax2,tStim);
-
-ax2.XAxisLocation = 'Top';
-ax1.YAxis.Visible = 'off';
-xlabel(ax1,'Time (seconds)'); 
-xlabel(ax2,'Time of day'); 
-
-legend('raw', 'phasic','tonic');
+plot(Time,x1,Time,x2,Time,x3);
+hold on
+xlabel('Time of day');
+if ~isempty(stimulationTimes)
+    tStim = timeofday(datetime(stimulationTimes,'InputFormat','HH:mm:ss'));
+    xline(tStim);
+end
+grid on
+legend('Preproccesed Data', 'phasic','tonic');
 
 
-% plot the fft for a wanted signal:
-x = preproccesed_data;
-X = fftshift(fft(x,NFFT));
+
+% % plot the fft for a wanted signal:
+% x = preproccesed_data;
+% X = fftshift(fft(x,NFFT));
 
 % figure;
 % plot(fvec,abs(X));
