@@ -8,16 +8,17 @@ function [tonic, phasic] = tonicPhasicFilter(x, fs, cutoffFreq, order)
     if (nargin == 2)
         cutoffFreq = 0.005; %Hz
         order = 64;
-    else if (nargin == 3 && isempty(cutoffFreq))
+    elseif (nargin == 3 && isempty(cutoffFreq))
         cutoffFreq = 0.005; %Hz
     else         
-        order = 64;
-
-            
+        order = 64;  
     end
+    
+    
     firLPF = designfilt('lowpassfir','FilterOrder',order, ...
         'CutoffFrequency',cutoffFreq,'SampleRate',fs);
 
     tonic = filtfilt(firLPF,x);
     phasic = x - tonic;
+    
 end

@@ -5,7 +5,7 @@ fs = 3; %Hertz
 if ~exist('T', 'var')
     T = readtable(['C:\Users\alonz\OneDrive - Technion\תואר\סמסטר 6\פרויקט\' ...
         'project - Stress Detection with a Smart Ring\' ...
-        'Ring Samples\CSV\MMDataF5B57A688F87_4_20.csv']);
+        'Ring Samples\CSV\MMDataF5B57A688F87_4_27.csv']);
     
     Time = timeofday(T.date_time);
     secsFromStart = T.time_sec_;
