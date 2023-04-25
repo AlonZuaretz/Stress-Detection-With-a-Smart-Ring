@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, time
 import regex as re
 import os
 
@@ -10,19 +10,20 @@ txt_file_name = (os.path.basename(path_to_txt)).replace('.txt', '')
 path_to_dir = input("please enter path to directory: ")
 # C:/Lilach/Technion/Project A
 # C:/Users/alonz/OneDrive - Technion/תואר/סמסטר 6/פרויקט/project - Stress Detection with a Smart Ring/Ring Samples/CSV
+
 ring_ID = 'Ring ID: F5:B5:7A:68:8F:87\n'
 outputs = []
 section_num = 0
 start_line = False
+start_time = []
+end_time =[]
 time_msec_ref = 0
 date_ref = datetime(1970, 1, 1)
-txt_file = open(path_to_txt, 'r')
+txt_file = open(path_to_txt, 'r').readlines()
 
 for line in txt_file:
     if line == ring_ID:
         section_num += 1
-        #globals()[f"output_{section_num}"] = "date_time,time(sec),st,mm,ii,raw,ax,ay,az,scr"
-        #outputs.append(f"{f'output_{section_num}'}")
         outputs.append("date_time,time(sec),st,mm,ii,raw,ax,ay,az,scr")
         start_line = True
     else:
@@ -42,14 +43,24 @@ for line in txt_file:
         time_sec = time_msec/1e3
         if start_line:
             time_msec_ref = time_msec
+            time_ref_full = date_ref + timedelta(seconds=time_msec/1e3) + timedelta(hours=3)
+            start_time.append(time_ref_full)
             start_line = False
         time_sec_from_start = (time_msec - time_msec_ref)/1e3
         time_full = date_ref + timedelta(seconds=time_sec) + timedelta(hours=3)
 
+        if txt_file.index(line) == len(txt_file)-1 or txt_file[txt_file.index(line)+1] == ring_ID:
+            end_time.append(time_full)
+
         outputs[-1] += f"\n{time_full},{time_sec_from_start},{st},{mm},{ii},{raw},{ax},{ay},{az},{scr}"
 
+#print(start_time)
+#print(end_time)
+
 for output in outputs:
-    print(f"Created output csv file '{txt_file_name}_{outputs.index(output)}' in given directory")
-    output_csv = open(f"{path_to_dir}/{txt_file_name}_{outputs.index(output)}.csv", 'w')
+    curr_start_time = start_time[outputs.index(output)].strftime("%Y-%m-%d_%H-%M-%S")
+    curr_end_time = end_time[outputs.index(output)].strftime("%Y-%m-%d_%H-%M-%S")
+    print(f"Created output csv file '{txt_file_name}_{curr_start_time}-{curr_end_time}' in given directory")
+    output_csv = open(f"{path_to_dir}/{txt_file_name}_{curr_start_time}-{curr_end_time}.csv", 'w')
     output_csv.write(output)
     output_csv.close()
