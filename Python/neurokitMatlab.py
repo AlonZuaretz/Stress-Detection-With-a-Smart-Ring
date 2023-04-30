@@ -40,7 +40,6 @@ def neurokit(eda_signal, phasicMethod, peakMethod):
         EDA_peaks = peaks_df["SCR_Peaks"].tolist()
         tonic = []
 
-
     return tonic, phasic, EDA_peaks
 
 
