@@ -16,7 +16,7 @@ def neurokit(eda_signal, phasicMethod, peakMethod):
                 phasicmethod = "highpass"
                 print("Default method was used - High Pass filter")
 
-        phasic_df = nk.eda_phasic(eda_signal, sampling_rate=3, method=phasicmethod,)
+        phasic_df = nk.eda_phasic(eda_signal, sampling_rate=3, method=phasicmethod)
         tonic, phasic = phasic_df["EDA_Tonic"].values.tolist(), phasic_df["EDA_Phasic"].values.tolist()
         EDA_peaks = []
 
