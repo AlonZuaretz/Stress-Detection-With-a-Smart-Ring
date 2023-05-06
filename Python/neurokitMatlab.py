@@ -36,7 +36,7 @@ def neurokit(eda_signal, phasicMethod, peakMethod):
                 peakmethod = "vanhalem2020"
             case _:
                 peakmethod = "neurokit"
-        _, peaks_df = nk.eda_peaks(phasic, sampling_rate=3, method=peakmethod)
+        _, peaks_df = nk.eda_peaks(phasic, sampling_rate=4, method=peakmethod)
         EDA_peaks = peaks_df["SCR_Peaks"].tolist()
         tonic = []
 

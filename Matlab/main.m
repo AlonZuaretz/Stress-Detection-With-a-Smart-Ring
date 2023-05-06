@@ -1,7 +1,7 @@
 % Constant Parameters:
 fs = 3; %Hertz
 
-%% Extract data: #new branch
+%% Extract data:
 if ~exist('T', 'var')
     T = readtable(['C:\Users\alonz\OneDrive - Technion\תואר\סמסטר 6\פרויקט\' ...
         'project - Stress Detection with a Smart Ring\' ...
