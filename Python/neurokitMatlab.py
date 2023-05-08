@@ -2,7 +2,7 @@ import neurokit2 as nk
 import numpy as np
 
 
-def neurokit(eda_signal, phasicMethod, peakMethod):
+def neurokit(eda_signal, phasicMethod, peakMethod,fs):
     # Separate components:
     if len(phasicMethod):
         match phasicMethod:
@@ -16,7 +16,7 @@ def neurokit(eda_signal, phasicMethod, peakMethod):
                 phasicmethod = "highpass"
                 print("Default method was used - High Pass filter")
 
-        phasic_df = nk.eda_phasic(eda_signal, sampling_rate=3, method=phasicmethod)
+        phasic_df = nk.eda_phasic(eda_signal, sampling_rate=fs, method=phasicmethod)
         tonic, phasic = phasic_df["EDA_Tonic"].values.tolist(), phasic_df["EDA_Phasic"].values.tolist()
         EDA_peaks = []
 
@@ -36,7 +36,7 @@ def neurokit(eda_signal, phasicMethod, peakMethod):
                 peakmethod = "vanhalem2020"
             case _:
                 peakmethod = "neurokit"
-        _, peaks_df = nk.eda_peaks(phasic, sampling_rate=3, method=peakmethod)
+        _, peaks_df = nk.eda_peaks(phasic, sampling_rate=fs, method=peakmethod)
         EDA_peaks = peaks_df["SCR_Peaks"].tolist()
         tonic = []
 
@@ -45,6 +45,6 @@ def neurokit(eda_signal, phasicMethod, peakMethod):
 
 
 
-tonic, phasic, EDA_peaks = neurokit(eda_signal, phasicMethod, peakMethod)
+tonic, phasic, EDA_peaks = neurokit(eda_signal, phasicMethod, peakMethod, fs)
 
 
