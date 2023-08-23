@@ -20,29 +20,29 @@ function [p,t, winIdx] = powertogram(a,time, N_win, OL)
         jj = jj+N_win-OL;
     end
 %% True powertogram
-    Fs = 3;
-    dt = 1/Fs;
-    x = a.x;
-    winsize = 40;
-    numoverlap = round(0.6*winsize);
-    win = hamming(winsize);
-    X = buffer(x,winsize,numoverlap);
-    for nn = 1:size(X,2)
-    [Pxx(:,nn),F] = pwelch(X(:,nn),win,length(win)/2,length(win),Fs);
-    end
-     % create a time vector
-     idxbegin = find(X(:,1) == 0);
-     numpresteps = length(idxbegin);
-     idxend = find(X(:,end) == 0);
-     numpoststeps = length(idxend);
-     tbegin = -(numpresteps*dt)/2;
-     tend = time(end)+((numpoststeps*dt))/2;
-     tvec = linspace(tbegin,tend,size(Pxx,2));
-     figure;
-     surf(tvec,F,10*log10(abs(Pxx)),'EdgeColor','none');   
-     axis xy; axis tight; colormap(jet); view(0,90);
-     xlabel('Time (sec)');
-     ylabel('Frequency (Hz)');
+    % Fs = 3;
+    % dt = 1/Fs;
+    % x = a.x;
+    % winsize = 40;
+    % numoverlap = round(0.6*winsize);
+    % win = hamming(winsize);
+    % X = buffer(x,winsize,numoverlap);
+    % for nn = 1:size(X,2)
+    % [Pxx(:,nn),F] = pwelch(X(:,nn),win,length(win)/2,length(win),Fs);
+    % end
+    %  % create a time vector
+    %  idxbegin = find(X(:,1) == 0);
+    %  numpresteps = length(idxbegin);
+    %  idxend = find(X(:,end) == 0);
+    %  numpoststeps = length(idxend);
+    %  tbegin = -(numpresteps*dt)/2;
+    %  tend = time(end)+((numpoststeps*dt))/2;
+    %  tvec = linspace(tbegin,tend,size(Pxx,2));
+    %  figure;
+    %  surf(tvec,F,10*log10(abs(Pxx)),'EdgeColor','none');   
+    %  axis xy; axis tight; colormap(jet); view(0,90);
+    %  xlabel('Time (sec)');
+    %  ylabel('Frequency (Hz)');
 
 end
 

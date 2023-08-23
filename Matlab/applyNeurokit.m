@@ -1,6 +1,6 @@
-function [tonic,phasic,tEDA_peaks,ampEDA_peaks] =  applyNeurokit(EDA, t)
+function [tonic,phasic,tEDA_peaks,ampEDA_peaks] =  applyNeurokit(EDA, t, method)
 %extract tonic and phasic components:
-phasicMethod = 'Convex';
+phasicMethod = method;
 tonic = pyrunfile('neurokitMatlab.py', "tonic", ...
     eda_signal = EDA, phasicMethod = phasicMethod, peakMethod='');
 phasic = pyrunfile('neurokitMatlab.py', "phasic", ...
@@ -16,5 +16,5 @@ EDA_peaks = pyrunfile('neurokitMatlab.py', "EDA_peaks", ...
 
 
 %find the time and amplitude of the peaks to plot them:
-tEDA_peaks = t(double(EDA_peaks)+1+1*strcmp(peakMethod,'Kim2004'));
-ampEDA_peaks = phasic(double(EDA_peaks)+1+1*strcmp(peakMethod,'Kim2004'));
+tEDA_peaks = []; %t(double(EDA_peaks)+1+1*strcmp(peakMethod,'Kim2004'));
+ampEDA_peaks =[]; % phasic(double(EDA_peaks)+1+1*strcmp(peakMethod,'Kim2004'));
