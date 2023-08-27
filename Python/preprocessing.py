@@ -1,6 +1,6 @@
-import neuroki2 as nk
+import neurokit2 as nk
 import numpy as np
-def preprocessing(raw_eda, fs)
+def preprocessing(raw_eda, fs):
     filtered_eda = nk.signal_filter(raw_eda, fs, highcut = 0.5, order = 4, method = "butterworth")
     eda = nk.standardize(filtered_eda, robust = True)
 
