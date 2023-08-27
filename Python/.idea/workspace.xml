@@ -5,10 +5,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d16b5f7f-8389-4f0e-bc5b-785e575a9cb2" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/../Matlab/Denoising.m" beforeDir="false" afterPath="$PROJECT_DIR$/../Matlab/Denoising.m" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Matlab/GUI_v1.mlapp" beforeDir="false" afterPath="$PROJECT_DIR$/../Matlab/GUI_v1.mlapp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Matlab/applyNeurokit.m" beforeDir="false" afterPath="$PROJECT_DIR$/../Matlab/applyNeurokit.m" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Matlab/powertogram.m" beforeDir="false" afterPath="$PROJECT_DIR$/../Matlab/powertogram.m" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -47,15 +43,16 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/yossi/Documents/GitHub/Stress-Detection-With-a-Smart-Ring/Python&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "full.screen.before.presentation.mode": "false",
+    "last_opened_file_path": "C:/Users/yossi/Documents/GitHub/Stress-Detection-With-a-Smart-Ring/Python",
+    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable"
   }
-}</component>
-  <component name="RunManager">
+}]]></component>
+  <component name="RunManager" selected="Python.main">
     <configuration name="main" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
       <module name="Python" />
       <option name="INTERPRETER_OPTIONS" value="" />
