@@ -17,7 +17,6 @@ import json
 
 # Labels: stressed = 1, relaxed = -1
 
-
 def load_data(path, experiment):
 
     if experiment == "Ring Experiment":
@@ -101,4 +100,5 @@ def load_data(path, experiment):
         df_tmp['Raw EDA'] = raw_eda
         df_tmp['Time Stamps'] = time_stamps
         df_dict['Data'] = df_tmp
+        df_dict['Experiment'] = experiment
     return df_dict
