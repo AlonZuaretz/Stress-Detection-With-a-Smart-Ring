@@ -47,6 +47,7 @@ def load_data(path, experiment):
         start_date_stamp = df.columns.values[0]
         fs = df[start_date_stamp][0]
         raw_eda = df[start_date_stamp][2:]
+        raw_eda = raw_eda.reset_index(drop=True)
         N_samples = len(raw_eda)
         time_stamps = np.arange(0, N_samples)/fs
 
@@ -71,26 +72,33 @@ def load_data(path, experiment):
         df_dict['Sampling Rate'] = fs
         df_dict['Device'] = 'Empatica E4'
         df_dict['Participant ID'] = participantID
+        df_dict['Experiment'] = experiment
 
         json_df = pd.json_normalize(data,  record_path=['Physio_RawData', 'Video_Physio_RawData'])
         json_df = json_df.drop(columns=['ACC_RawData', 'SKT_RawData', 'BVP_RawData', 'IBI_RawData', 'HR_RawData'])
-
+        idx = 0
         for row in range(len(json_df)):
-            df_tmp = pd.DataFrame([])
-            df_dict[json_df['VideoID'][row]] = {}
-            N_samples = len(json_df['EDA_RawData'][row])
+            vidID = json_df['VideoID'][idx]
+            if vidID == 'V3' or vidID == 'V7' or vidID == 'V2' or vidID == 'V6':
+                df_tmp = pd.DataFrame([])
+                df_dict[json_df['VideoID'][idx]] = {}
+                N_samples = len(json_df['EDA_RawData'][idx])
 
-            tmp_eda = np.zeros(N_samples)
-            tmp_timestamp = np.zeros(N_samples)
-            for i in range(N_samples):
-                tmp_eda[i] = json_df['EDA_RawData'][row][i]['EDA']
-                tmp_timestamp[i] = json_df['EDA_RawData'][row][i]['TimeStamp']
+                tmp_eda = np.zeros(N_samples)
+                tmp_timestamp = np.zeros(N_samples)
+                for i in range(N_samples):
+                    tmp_eda[i] = json_df['EDA_RawData'][idx][i]['EDA']
+                    tmp_timestamp[i] = json_df['EDA_RawData'][idx][i]['TimeStamp']
 
-            df_tmp['Raw EDA'] = tmp_eda
-            df_tmp['Time Stamps'] = tmp_timestamp
-            df_dict[json_df['VideoID'][row]]['Data'] = df_tmp
-            df_dict[json_df['VideoID'][row]]['Number of Samples'] = N_samples
-            df_dict[json_df['VideoID'][row]]['Label'] = ' '
+                df_tmp['Raw EDA'] = tmp_eda
+                df_tmp['Time Stamps'] = tmp_timestamp
+                df_dict[json_df['VideoID'][idx]]['Data'] = df_tmp
+                df_dict[json_df['VideoID'][idx]]['Number of Samples'] = N_samples
+                df_dict[json_df['VideoID'][idx]]['Label'] = 1 * (vidID == 'V3' or vidID == 'V7')\
+                                                            - 1 * (vidID == 'V2' or vidID == 'V6')
+                idx = idx + 1
+            else:
+                idx = idx + 1
         df_flag = False
 ##
     elif experiment == "UBFC-phys":
@@ -118,10 +126,12 @@ def load_data(path, experiment):
         start_date_stamp = df.columns.values[0]
         fs = df[start_date_stamp][0]
         raw_eda = df[start_date_stamp][2:]
+        raw_eda = raw_eda.reset_index(drop=True)
         N_samples = len(raw_eda)
         time_stamps = np.arange(0, N_samples) / fs
 
         # TODO: determine label
+
 
         device = "Empatica E4"
         participantID = folder
