@@ -19,12 +19,12 @@ def extract_signal_avro(avro_files:list,user_num:int,testing=False):
     for file in avro_files:
         reader = DataFileReader(open(file, "rb"), DatumReader())
         schema = json.loads(reader.meta.get('avro.schema').decode('utf-8'))
+        data = []
         for datum in reader:
             data.append(datum)
         reader.close()
     
     data.sort(key=lambda datum : int(datum["rawData"]["bvp"]["timestampStart"]))
-    print(f"num files: {len(data)}")
     
    
     # print(schema)
@@ -112,7 +112,7 @@ def extract_signal_avro(avro_files:list,user_num:int,testing=False):
         
 
 
-if __name__=="__main__":
+if __name__== "__main__":
     while True:
         input_list = input_list = input("Enter a list of Avro files separated by spaces: ")
         try:
@@ -131,5 +131,4 @@ if __name__=="__main__":
     input_testing = bool(int(input("If Testing, input 1 else 0, if you are running the experiment enter 0 : ")) ==1 )
     print(input_testing)
 
-    
     extract_signal_avro(input_list,input_user,testing=input_testing)

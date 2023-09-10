@@ -5,14 +5,51 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d16b5f7f-8389-4f0e-bc5b-785e575a9cb2" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/CEAP_360VR.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/last_project_sample.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ring_sample.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/../.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../.idea/workspace.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/load_data.py" beforeDir="false" afterPath="$PROJECT_DIR$/load_data.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mainEDA.py" beforeDir="false" afterPath="$PROJECT_DIR$/mainEDA.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/preprocessing.py" beforeDir="false" afterPath="$PROJECT_DIR$/preprocessing.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/not_needed/ring_sameples_extraction/1-1-2_1692090795.avro" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/not_needed/ring_sameples_extraction/1-1-2_1692090795/acc_fs2.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/not_needed/ring_sameples_extraction/1-1-2_1692090795/acc_stamps_2_2.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/not_needed/ring_sameples_extraction/1-1-2_1692090795/accx_2.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/not_needed/ring_sameples_extraction/1-1-2_1692090795/accx_2_0.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/not_needed/ring_sameples_extraction/1-1-2_1692090795/accx_2_2.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/not_needed/ring_sameples_extraction/1-1-2_1692090795/accy_2.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/not_needed/ring_sameples_extraction/1-1-2_1692090795/accy_2_0.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/not_needed/ring_sameples_extraction/1-1-2_1692090795/accy_2_2.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/not_needed/ring_sameples_extraction/1-1-2_1692090795/accz_2.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/not_needed/ring_sameples_extraction/1-1-2_1692090795/accz_2_0.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/not_needed/ring_sameples_extraction/1-1-2_1692090795/accz_2_2.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/not_needed/ring_sameples_extraction/1-1-2_1692090795/bvp_2.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/not_needed/ring_sameples_extraction/1-1-2_1692090795/bvp_2_0.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/not_needed/ring_sameples_extraction/1-1-2_1692090795/bvp_2_2.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/not_needed/ring_sameples_extraction/1-1-2_1692090795/bvp_fs2.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/not_needed/ring_sameples_extraction/1-1-2_1692090795/bvp_stamps_2_2.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/not_needed/ring_sameples_extraction/1-1-2_1692090795/eda_2.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/not_needed/ring_sameples_extraction/1-1-2_1692090795/eda_2_0.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/not_needed/ring_sameples_extraction/1-1-2_1692090795/eda_2_2.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/not_needed/ring_sameples_extraction/1-1-2_1692090795/eda_fs2.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/not_needed/ring_sameples_extraction/1-1-2_1692090795/eda_stamps_2_2.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/not_needed/ring_sameples_extraction/1-1-2_1692090795/tags.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/not_needed/ring_sameples_extraction/1-1-2_1692091007.avro" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/not_needed/ring_sameples_extraction/1-1-2_1692091913.avro" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/not_needed/ring_sameples_extraction/1-1-2_1692092814.avro" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/not_needed/ring_sameples_extraction/acc_fs2.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/not_needed/ring_sameples_extraction/acc_stamps_2_0.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/not_needed/ring_sameples_extraction/accx_2.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/not_needed/ring_sameples_extraction/accy_2.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/not_needed/ring_sameples_extraction/accz_2.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/not_needed/ring_sameples_extraction/bvp_2.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/not_needed/ring_sameples_extraction/bvp_fs2.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/not_needed/ring_sameples_extraction/bvp_stamps_2_0.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/not_needed/ring_sameples_extraction/eda_2.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/not_needed/ring_sameples_extraction/eda_fs2.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/not_needed/ring_sameples_extraction/eda_stamps_2_0.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/not_needed/ring_sameples_extraction/extracting_eda_from_watch-function.py" beforeDir="false" afterPath="$PROJECT_DIR$/not_needed/ring_sameples_extraction/extracting_eda_from_watch-function.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/not_needed/ring_sameples_extraction/tags.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/txt_to_csv.py" beforeDir="false" afterPath="$PROJECT_DIR$/txt_to_csv.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../getRaw.m" beforeDir="false" afterPath="$PROJECT_DIR$/../getRaw.m" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -66,7 +103,28 @@
       <recent name="C:\Users\alonz\OneDrive - Technion\Documents\GitHub\Stress-Detection-With-a-Smart-Ring\Python\not_needed" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Python.mainEDA">
+    <configuration name="mainEDA (1)" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="Python" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/mainEDA.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="mainEDA" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
       <module name="Python" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -88,6 +146,11 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.mainEDA (1)" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -128,6 +191,11 @@
           <url>file://$PROJECT_DIR$/ring_sameples_extraction/extracting_eda_from_watch-function.py</url>
           <line>86</line>
           <option name="timeStamp" value="3" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/mainEDA.py</url>
+          <line>135</line>
+          <option name="timeStamp" value="13" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

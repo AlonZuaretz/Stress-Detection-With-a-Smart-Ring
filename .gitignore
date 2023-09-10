@@ -3,3 +3,5 @@
 .idea/
 Python/.idea/workspace.xml
 Python/.idea/workspace.xml
+*.avro
+*.csv
