@@ -11,6 +11,3 @@ def preprocessing(raw_eda, fs):
     mu = np.mean(filtered_eda)
     eda = (filtered_eda-mu)/np.sqrt(var)
     return eda, var
-
-
-
