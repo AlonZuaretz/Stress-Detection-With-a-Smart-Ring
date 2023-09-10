@@ -1,6 +1,8 @@
 import numpy as np
 import pandas as pd
 import json
+import os
+import glob
 
 # Documentation:
 # Inputs: path to file, experiment : which experiment to load
@@ -17,8 +19,12 @@ import json
 
 # Labels: stressed = 1, relaxed = -1
 
+
 def load_data(path, experiment):
 
+    file_name = os.path.basename(path)
+    path_to_dir = os.path.dirname(path)
+    folder = os.path.basename(path_to_dir)
     if experiment == "Ring Experiment":
         df = pd.read_csv(path)
         fs = 3
@@ -26,12 +32,14 @@ def load_data(path, experiment):
         N_samples = len(raw_eda)
         time_stamps = df['time(sec)']
         start_date_stamp = df['date_time'][0]
-        if ():
+
+        #
+        if "stress" in file_name:
             label = 1
-        else:
+        elif "calm" in file_name:
             label = -1
         device = "Ring"
-        participantID = ''
+        participantID = folder
         df_flag = True
 ##
     elif experiment == "Empatica SIPL Experiment":
@@ -42,14 +50,13 @@ def load_data(path, experiment):
         N_samples = len(raw_eda)
         time_stamps = np.arange(0, N_samples)/fs
 
-        if ():
+        if "V3" in file_name or "V4" in file_name:
             label = 1
-        else:
+        elif "V1" in file_name or "V2" in file_name:
             label = -1
 
-
         device = "Empatica E4"
-        participantID = ''
+        participantID = folder
         df_flag = True
 ##
     elif experiment == "CEAP_360VR":
@@ -86,10 +93,47 @@ def load_data(path, experiment):
             df_dict[json_df['VideoID'][row]]['Label'] = ' '
         df_flag = False
 ##
+    elif experiment == "UBFC-phys":
+        df = pd.read_csv(path)
+        fs = 4
+        raw_eda = df.values
+        N_samples = len(raw_eda)
+        time_stamps = np.arange(0, N_samples) / fs
+        participantID = folder
+        device = "Empatica E4"
+
+        # Determine label:
+        f = open(os.path.join(path_to_dir, ("info_" + participantID + ".txt")), "r")
+        exp_method = f.read()
+        f.close()
+        if "test" in exp_method and ("T2" in file_name or "T3" in file_name):
+            label = 1
+        else:
+            label = -1
+
+        df_flag = True
+
+    elif experiment == "ECSMP_A":
+        df = pd.read_csv(path)
+        start_date_stamp = df.columns.values[0]
+        fs = df[start_date_stamp][0]
+        raw_eda = df[start_date_stamp][2:]
+        N_samples = len(raw_eda)
+        time_stamps = np.arange(0, N_samples) / fs
+
+        # TODO: determine label
+
+        device = "Empatica E4"
+        participantID = folder
+        df_flag = True
+
 
     if df_flag:
         df_dict = {}
         df_tmp = pd.DataFrame([])
+        df_tmp['Raw EDA'] = []
+        df_tmp['Time Stamps'] = []
+
         df_dict['Sample Path'] = path
         df_dict['Participant ID'] = participantID
         # df_dict['Start Date and Time'] = start_date_stamp
@@ -97,8 +141,14 @@ def load_data(path, experiment):
         df_dict['Number of Samples'] = N_samples
         df_dict['Sampling Rate'] = fs
         df_dict['Label'] = label
-        df_tmp['Raw EDA'] = raw_eda
         df_tmp['Time Stamps'] = time_stamps
+        df_tmp['Raw EDA'] = raw_eda
         df_dict['Data'] = df_tmp
         df_dict['Experiment'] = experiment
     return df_dict
+
+
+def glob_filetypes(root_dir, *patterns):
+    return [path
+            for pattern in patterns
+            for path in glob.glob(os.path.join(root_dir, pattern))]
