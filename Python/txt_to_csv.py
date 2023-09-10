@@ -4,12 +4,17 @@ import os
 
 path_to_txt = input("please enter path to ring txt file: ")
 # C:/Users/yossi/Desktop/MMDataF5B57A688F87_4.txt
+# C:/Lilach/Technion/Project A/Roy Samples.txt
 # C:/Users/alonz/OneDrive - Technion/תואר/פרויקט/project - Stress Detection with a Smart Ring/samples and data/MoodMetric Ring/Roy Samples.txt
 txt_file_name = (os.path.basename(path_to_txt)).replace('.txt', '')
-# maybe we need to change name
+
 path_to_dir = input("please enter path to directory: ")
 # C:/Lilach/Technion/Project A
 # C:/Users/alonz/OneDrive - Technion/תואר/פרויקט/project - Stress Detection with a Smart Ring/Ring Samples/CSV/Roy_Samples
+
+stress_class = input("please enter stress/calm classification for the samples (For example: calm calm stress stress): ")
+stress_class_list = list(stress_class.split(" "))
+#ctrl_calm calm calm stress stress stress_try
 
 ring_ID = 'Ring ID: F5:B5:7A:68:8F:87\n'
 outputs = []
@@ -66,7 +71,9 @@ for x in range(section_num):
     curr_start_time = start_time[x].strftime("%d%m%Y_%H-%M-%S")
     curr_end_time = end_time[x].strftime("%d%m%Y_%H-%M-%S")
     print(f"Created output csv file '{curr_start_time}-{curr_end_time}' in given directory")
-    output_csv = open(f"{path_to_dir}/{curr_start_time}-{curr_end_time}.csv", 'w')
+    if (x < len(stress_class_list)):
+        output_csv = open(f"{path_to_dir}/Ring_{curr_start_time}-{curr_end_time}_{x+1}_{stress_class_list[x]}.csv", 'w')
+    else: output_csv = open(f"{path_to_dir}/Ring_{curr_start_time}-{curr_end_time}_{x+1}.csv", 'w')
     output_csv.write(outputs[x])
     output_csv.close()
 

@@ -7,7 +7,15 @@ import pywt
 eda_df = pd.read_csv("C:/Lilach/Technion/Project A/09042023_10-03-44-09042023_10-06-51.csv")
 eda_signal = eda_df["raw"].values
 
+# eda_signal = pd.read_csv("C:/Lilach/Technion/Project A/EDA_V4.csv")
+# start_date_stamp = eda_signal.columns.values[0]
+# fs = eda_signal[start_date_stamp][0]
+# raw_eda = eda_signal[start_date_stamp][2:]
+# raw_eda = raw_eda.reset_index(drop=True)
+
+
 def feature_extraction(eda_signal, fs, eda_var, decompose_method):
+    fs = int(fs)
     #extra_features_df = pd.DataFrame([]) # In case we want to extract more features using cvxEDA (not from neurokit)
 
     # Phasic and Tonic Decomposition
@@ -103,7 +111,7 @@ def feature_extraction(eda_signal, fs, eda_var, decompose_method):
                      "wvt_std_0p75hz" : wvt_std_0p75hz, "wvt_median_0p75hz" : wvt_median_0p75hz,
                      "dynamic_range_mean" : dynamic_range_mean}
 
-
+    #
     # features = pd.DataFrame([[Tonic_energy, Tonic_mean, Tonic_std, Tonic_median, Phasic_energy, Phasic_mean, Phasic_std,
     #                         Phasic_median, SCR_num, SCR_mean_amplitude, SCR_mean_riseTime, SCR_mean_recoveryTime,
     #                         SCR_mean_height, SCR_std_height, eda_energy, eda_mean, eda_std, eda_median, eda_max, eda_min,
@@ -121,5 +129,5 @@ def feature_extraction(eda_signal, fs, eda_var, decompose_method):
     #                                  'dynamic_range_mean'])
     return features_dict
 
-features = feature_extraction(eda_signal, 3, 0.3, decompose_method='cvxEDA')
+features = feature_extraction(eda_signal, 3, 0.3, decompose_method='sparsEDA')
 print(features)

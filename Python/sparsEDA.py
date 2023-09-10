@@ -325,7 +325,7 @@ def sparsEDA(signalIn, sr, epsilon, Kmax, dmin, rho):
     Cte = np.sum(R[:, 0] ** 2)
     R[:, 0:6] = R[:, 0:6] / np.sqrt(Cte)
 
-    pd.DataFrame(R).to_csv('d1.csv', index=None, columns=None)
+    #pd.DataFrame(R).to_csv('d1.csv', index=None, columns=None)
 
     # Loop
     cutS = 0
