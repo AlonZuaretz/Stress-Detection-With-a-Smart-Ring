@@ -5,13 +5,13 @@ from tkinter.filedialog import askdirectory
 from sklearn import svm
 from sklearn.model_selection import train_test_split
 from sklearn import metrics
+from tkinter import Tk
 
 import glob
 import os
 import feature_extraction as fe
 import pandas as pd
 import numpy as np
-from tkinter import Tk
 import matplotlib.pyplot as plt
 
 # Select The experiment:
@@ -116,12 +116,12 @@ for i in range(files_num):
         vidIdx = 0
         for vidID in ['V2', 'V3', 'V6', 'V7']:
             raw_eda[j + vidIdx] = eda_dict[i][vidID]['Data']['Raw EDA']
-            time_stamps[j+ vidIdx] = eda_dict[i][vidID]['Data']['Time Stamps']
-            fs[j+ vidIdx] = eda_dict[i]['Sampling Rate']
-            labels[j+ vidIdx] = eda_dict[i][vidID]['Label']
-            experiment[j+ vidIdx] = eda_dict[i]['Experiment']
-            participantID[j+ vidIdx] = eda_dict[i]['Participant ID']
-            device[j+ vidIdx] = eda_dict[i]['Device']
+            time_stamps[j + vidIdx] = eda_dict[i][vidID]['Data']['Time Stamps']
+            fs[j + vidIdx] = eda_dict[i]['Sampling Rate']
+            labels[j + vidIdx] = eda_dict[i][vidID]['Label']
+            experiment[j + vidIdx] = eda_dict[i]['Experiment']
+            participantID[j + vidIdx] = eda_dict[i]['Participant ID']
+            device[j + vidIdx] = eda_dict[i]['Device']
             vidIdx += 1
         j += vids_per_CEAP
     else:
@@ -149,20 +149,19 @@ for i in range(total_files_num):
 
 decompose_method = 'cvxEDA'
 features_df = pd.DataFrame([],
-                           columns=['Tonic_energy', 'Tonic_mean', 'Tonic_std', 'Tonic_median', 'Phasic_energy',
-                                    'Phasic_mean',
-                                    'Phasic_std', 'Phasic_median', 'SCR_num', 'SCR_mean_amplitude', 'SCR_mean_riseTime',
-                                    'SCR_mean_recoveryTime', 'SCR_mean_height', 'SCR_std_height', 'eda_energy',
-                                    'eda_mean', 'eda_std',
-                                    'eda_median', 'eda_max', 'eda_min', 'eda_mean_derivative_1', 'eda_std_derivative_1',
-                                    'eda_mean_derivative_2', 'eda_std_derivative_2', 'wvt_energy', 'wvt_mean',
-                                    'wvt_std',
-                                    'wvt_median', 'wvt_energy_1p5hz', 'wvt_mean_1p5hz', 'wvt_std_1p5hz',
-                                    'wvt_median_1p5hz',
-                                    'wvt_energy_0p75hz', 'wvt_mean_0p75hz', 'wvt_std_0p75hz', 'wvt_median_0p75hz',
-                                    'dynamic_range_mean'])
+       columns=['Tonic_energy', 'Tonic_mean', 'Tonic_std', 'Tonic_median', 'Phasic_energy',
+                'Phasic_mean',
+                'Phasic_std', 'Phasic_median', 'SCR_num', 'SCR_mean_amplitude', 'SCR_mean_riseTime',
+                'SCR_mean_recoveryTime', 'SCR_mean_height', 'SCR_std_height', 'eda_energy',
+                'eda_mean', 'eda_std',
+                'eda_median', 'eda_max', 'eda_min', 'eda_mean_derivative_1', 'eda_std_derivative_1',
+                'eda_mean_derivative_2', 'eda_std_derivative_2', 'wvt_energy', 'wvt_mean',
+                'wvt_std',
+                'wvt_median', 'wvt_energy_1p5hz', 'wvt_mean_1p5hz', 'wvt_std_1p5hz',
+                'wvt_median_1p5hz',
+                'wvt_energy_0p75hz', 'wvt_mean_0p75hz', 'wvt_std_0p75hz', 'wvt_median_0p75hz',
+                'dynamic_range_mean'])
 
-3
 for i in range(total_files_num):
     new_row = fe.feature_extraction(preprocessed_EDA[i], fs[i], var[i], decompose_method)
     features_df = pd.concat([features_df, new_row], ignore_index=True)
@@ -178,7 +177,7 @@ y = np.array(labels).squeeze()
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, train_size=0.7, shuffle=True, random_state=5)
 
 # Create svm Classifier
-clf = svm.SVC(kernel='linear') # Linear Kernel
+clf = svm.SVC(kernel='sigmoid') # Linear Kernel
 
 # Train the model:
 clf.fit(X_train, y_train)
