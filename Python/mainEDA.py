@@ -7,6 +7,8 @@ from sklearn.model_selection import train_test_split
 from sklearn import metrics
 from tkinter import Tk
 from sklearn.preprocessing import MinMaxScaler
+from sklearn.feature_selection import RFE
+from mlxtend.feature_selection import ExhaustiveFeatureSelector as EFS
 
 import glob
 import os
@@ -55,12 +57,13 @@ def import_data():
     
     # Get the path of folder:
     # For Alon:
-    initial_dir = "C:/Users/alonz/OneDrive - Technion/תואר/פרויקט/project" \
-                  " - Stress Detection with a Smart Ring/samples and data/for_classification"
+    # initial_dir = "C:/Users/alonz/OneDrive - Technion/תואר/פרויקט/project" \
+    #              " - Stress Detection with a Smart Ring/samples and data/for_classification"
     # For Lilach:
-    # initial_dir =
+    initial_dir = "C:/Users/yossi/OneDrive - Technion/סמסטר 6/פרויקט א/project - Stress Detection with a Smart Ring/samples and data/for_classification"
     
-    PATH = askdirectory(initialdir=initial_dir)
+    # PATH = askdirectory(initialdir=initial_dir)
+    PATH = initial_dir
     
     # Get a list of all the files that match file identifier:
     # the for in for goes over all files in directory and its subdirectories
@@ -200,23 +203,56 @@ if __name__=="__main__":
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, train_size=0.7, shuffle=True,
                                                         random_state=5)
     # fit scaler on training data
-    norm = MinMaxScaler().fit(X_train)
+    # norm = MinMaxScaler().fit(X_train)
 
     # transform training data
-    X_train_norm = norm.transform(X_train)
+    # X_train_norm = norm.transform(X_train)
 
     # transform testing dataabs
-    X_test_norm = norm.transform(X_test)
+    # X_test_norm = norm.transform(X_test)
 
     # Feature Processing:
     # filtered_features = features_selection()
 
     # Create svm Classifier
-    clf = svm.SVC(kernel='sigmoid')  # Linear Kernel
+    # clf = svm.SVC(kernel='sigmoid')  # Sigmoid Kernel
+    clf = svm.SVC(kernel='linear') # Linear Kernel
+
+    ## Added by Lilach:
+    ## Exhaustive Feature Selection
+    # efs1 = EFS(clf, min_features=2, max_features=5, scoring='accuracy', print_progress=True)
+    # efs1 = efs1.fit(X_train, y_train)
+    #
+    # print('Best accuracy score: %.2f' % efs1.best_score_)
+    # print('Best subset (indices):', efs1.best_idx_)
+    # print('Best subset (corresponding names):', efs1.best_feature_names_)
+    #
+    # y_pred = efs1.predict(X_test)
+    
+    ## Recursive Feature Elimination
+    max_accur = 0
+    selected_features = []
+    for i in range(len(features_df.columns)-5):
+        rfe = RFE(clf, n_features_to_select=i+1)
+        rfe_fit = rfe.fit(X_train, y_train)
+    
+        y_pred = rfe.predict(X_test)
+        accuracy = metrics.accuracy_score(y_test, y_pred)
+        print("Number of features: ", i+1)
+        print("current accuracy: ", accuracy)
+    
+        if accuracy > max_accur:
+            max_accur = accuracy
+            feature_idx = pd.Series(data=rfe_fit.ranking_, index=features_df.columns)
+            selected_features = feature_idx[feature_idx == 1].index
+    
+    print("Selected features are: ", selected_features.values)
+    ####
+    
     # Train the model:
-    clf.fit(X_train, y_train)
+    # clf.fit(X_train, y_train)
     # Predict the response for test dataset:
-    y_pred = clf.predict(X_test)
+    # y_pred = clf.predict(X_test)
     print("accuracy: ", metrics.accuracy_score(y_test, y_pred))
 
     # classification(X,y)
