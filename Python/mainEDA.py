@@ -6,6 +6,7 @@ from sklearn import svm
 from sklearn.model_selection import train_test_split
 from sklearn import metrics
 from tkinter import Tk
+from sklearn.preprocessing import MinMaxScaler
 
 import glob
 import os
@@ -16,9 +17,7 @@ import matplotlib.pyplot as plt
 
 
 def classification(X, y):
-    # Train-Test Split:
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, train_size=0.7, shuffle=True,
-                                                        random_state=5)
+
     # Create svm Classifier
     clf = svm.SVC(kernel='sigmoid')  # Linear Kernel
     # Train the model:
@@ -162,10 +161,14 @@ if __name__=="__main__":
     raw_eda, fs, labels = extract_data(EDA_files, files_num, samples_num, vids_per_CEAP, exp_str, user_exp_str)
 
     # Preprocess data:
+    cutoff_freq = 0.3
+    norm_method = "Standardization"
+    # norm_method = "Normalization"
+
     preprocessed_EDA = [[] for x in range(samples_num)]
     var = [[] for x in range(samples_num)]
     for i in range(samples_num):
-        preprocessed_EDA[i], var[i] = preprocessing(raw_eda[i], fs[i])
+        preprocessed_EDA[i], var[i] = preprocessing(raw_eda[i], fs[i], norm_method, cutoff_freq)
 
     # Feature Extraction:
     # features is a matrix of size M by N (or N by M) where N is the number of samples
@@ -189,13 +192,33 @@ if __name__=="__main__":
         new_row = fe.feature_extraction(preprocessed_EDA[i], fs[i], var[i], decompose_method)
         features_df = pd.concat([features_df, new_row], ignore_index=True)
 
-    # Feature Processing:
-    # filtered_features = features_selection()
-
-    # Classification:
+    # ------- Classification  ------- #
     X = np.array(features_df)
     y = np.array(labels).squeeze()
 
-    classification(X,y)
+    # Train-Test Split:
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, train_size=0.7, shuffle=True,
+                                                        random_state=5)
+    # fit scaler on training data
+    norm = MinMaxScaler().fit(X_train)
+
+    # transform training data
+    X_train_norm = norm.transform(X_train)
+
+    # transform testing dataabs
+    X_test_norm = norm.transform(X_test)
+
+    # Feature Processing:
+    # filtered_features = features_selection()
+
+    # Create svm Classifier
+    clf = svm.SVC(kernel='sigmoid')  # Linear Kernel
+    # Train the model:
+    clf.fit(X_train, y_train)
+    # Predict the response for test dataset:
+    y_pred = clf.predict(X_test)
+    print("accuracy: ", metrics.accuracy_score(y_test, y_pred))
+
+    # classification(X,y)
 
 
