@@ -18,16 +18,64 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-def classification(X, y):
+def classification(X, y, kernel, norm_flag, train_size, feature_names, selection_method = 'None'):
+    test_size = 1-train_size
 
-    # Create svm Classifier
-    clf = svm.SVC(kernel='sigmoid')  # Linear Kernel
-    # Train the model:
-    clf.fit(X_train, y_train)
-    # Predict the response for test dataset:
-    y_pred = clf.predict(X_test)
-    print("accuracy: ", metrics.accuracy_score(y_test, y_pred))
+    # Train-Test Split:
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=test_size, train_size=train_size, shuffle=True,
+                                                        random_state=5)
+    clf = svm.SVC(kernel=kernel)  # Sigmoid Kernel
 
+    if norm_flag:
+        # fit scaler on training data
+        norm = MinMaxScaler().fit(X_train)
+        # transform training data
+        X_train = norm.transform(X_train)
+        # transform testing dataabs
+        X_test = norm.transform(X_test)
+
+    if selection_method == "RFE":
+        ## Recursive Feature Elimination
+        max_accur = 0
+        selected_features = []
+        N_features = len(feature_names)
+        for i in range(0, N_features):
+            rfe = RFE(clf, n_features_to_select=i + 1)
+            rfe_fit = rfe.fit(X_train, y_train)
+
+            y_pred = rfe.predict(X_test)
+            accuracy = metrics.accuracy_score(y_test, y_pred)
+            print("Number of features: ", i + 1)
+            print("current accuracy: ", accuracy)
+            feature_idx_temp = pd.Series(data=rfe_fit.ranking_, index=feature_names)
+            selected_features_temp = feature_idx_temp[feature_idx_temp == 1].index
+            print("temp Selected features are: ", selected_features_temp.values)
+
+            if accuracy > max_accur:
+                max_accur = accuracy
+                feature_idx = pd.Series(data=rfe_fit.ranking_, index=feature_names)
+                selected_features = feature_idx[feature_idx == 1].index
+
+        print("Selected features are: ", selected_features.values)
+        print("Final Accuracy: ", max_accur)
+
+    elif selection_method == "EFS":
+        # Exhaustive Feature Selection
+        efs1 = EFS(clf, min_features=2, max_features=5, scoring='accuracy', print_progress=True)
+        efs1 = efs1.fit(X_train, y_train)
+
+        print('Best accuracy score: %.2f' % efs1.best_score_)
+        print('Best subset (indices):', efs1.best_idx_)
+        print('Best subset (corresponding names):', efs1.best_feature_names_)
+        y_pred = efs1.predict(X_test)
+        print("accuracy: ", metrics.accuracy_score(y_test, y_pred))
+
+    elif selection_method == 'None':
+        # Train the model:
+        clf.fit(X_train, y_train)
+        # Predict the response for test dataset:
+        y_pred = clf.predict(X_test)
+        print("accuracy: ", metrics.accuracy_score(y_test, y_pred))
 
 def import_data():
     # Select The experiment:
@@ -59,8 +107,11 @@ def import_data():
     # For Alon:
     # initial_dir = "C:/Users/alonz/OneDrive - Technion/תואר/פרויקט/project" \
     #              " - Stress Detection with a Smart Ring/samples and data/for_classification"
+
+    initial_dir = "C:/Users/alonz/OneDrive - Technion/תואר/פרויקט/project - Stress Detection with a Smart Ring/samples and data/MoodMetric Ring/CSV/28_8"
+
     # For Lilach:
-    initial_dir = "C:/Users/yossi/OneDrive - Technion/סמסטר 6/פרויקט א/project - Stress Detection with a Smart Ring/samples and data/for_classification"
+    # initial_dir = "C:/Users/yossi/OneDrive - Technion/סמסטר 6/פרויקט א/project - Stress Detection with a Smart Ring/samples and data/for_classification"
     
     # PATH = askdirectory(initialdir=initial_dir)
     PATH = initial_dir
@@ -160,13 +211,22 @@ def extract_data(EDA_files , files_num , samples_num , vids_per_CEAP, exp_str, u
 
 if __name__=="__main__":
 
+    # Parameters:
+    cutoff_freq = 0.1
+    norm_method = "Standardization"
+    # norm_method = "Normalization"
+    selection_method = "EFS"
+    kernel = 'linear'
+    norm_flag = True
+    train_size = 0.7
+    decompose_method = 'cvxEDA'
+
+
     EDA_files, files_num, samples_num, vids_per_CEAP, exp_str, user_exp_str = import_data()
     raw_eda, fs, labels = extract_data(EDA_files, files_num, samples_num, vids_per_CEAP, exp_str, user_exp_str)
 
     # Preprocess data:
-    cutoff_freq = 0.3
-    norm_method = "Standardization"
-    # norm_method = "Normalization"
+
 
     preprocessed_EDA = [[] for x in range(samples_num)]
     var = [[] for x in range(samples_num)]
@@ -176,7 +236,6 @@ if __name__=="__main__":
     # Feature Extraction:
     # features is a matrix of size M by N (or N by M) where N is the number of samples
     # and M is the number of features
-    decompose_method = 'cvxEDA'
     features_df = pd.DataFrame([],
            columns=['Tonic_energy', 'Tonic_mean', 'Tonic_std', 'Tonic_median', 'Phasic_energy',
                     'Phasic_mean',
@@ -192,69 +251,27 @@ if __name__=="__main__":
                     'dynamic_range_mean'])
 
     for i in range(samples_num):
-        new_row = fe.feature_extraction(preprocessed_EDA[i], fs[i], var[i], decompose_method)
-        features_df = pd.concat([features_df, new_row], ignore_index=True)
+        try:
+            new_row = fe.feature_extraction(preprocessed_EDA[i], fs[i], var[i], decompose_method)
+            features_df = pd.concat([features_df, new_row], ignore_index=True)
+        except IndexError:
+            print("IndexError in file", EDA_files[i])
+            del labels[i]
+            continue
+        except:
+            print("Error in file", EDA_files[i])
+            del labels[i]
+            continue
+
 
     # ------- Classification  ------- #
     X = np.array(features_df)
     y = np.array(labels).squeeze()
 
-    # Train-Test Split:
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, train_size=0.7, shuffle=True,
-                                                        random_state=5)
-    # fit scaler on training data
-    # norm = MinMaxScaler().fit(X_train)
+    classification(X, y, kernel, norm_flag, train_size, features_df.columns, selection_method)
 
-    # transform training data
-    # X_train_norm = norm.transform(X_train)
 
-    # transform testing dataabs
-    # X_test_norm = norm.transform(X_test)
-
-    # Feature Processing:
-    # filtered_features = features_selection()
-
-    # Create svm Classifier
-    # clf = svm.SVC(kernel='sigmoid')  # Sigmoid Kernel
-    clf = svm.SVC(kernel='linear') # Linear Kernel
-
-    ## Added by Lilach:
-    ## Exhaustive Feature Selection
-    # efs1 = EFS(clf, min_features=2, max_features=5, scoring='accuracy', print_progress=True)
-    # efs1 = efs1.fit(X_train, y_train)
-    #
-    # print('Best accuracy score: %.2f' % efs1.best_score_)
-    # print('Best subset (indices):', efs1.best_idx_)
-    # print('Best subset (corresponding names):', efs1.best_feature_names_)
-    #
-    # y_pred = efs1.predict(X_test)
     
-    ## Recursive Feature Elimination
-    max_accur = 0
-    selected_features = []
-    for i in range(len(features_df.columns)-5):
-        rfe = RFE(clf, n_features_to_select=i+1)
-        rfe_fit = rfe.fit(X_train, y_train)
-    
-        y_pred = rfe.predict(X_test)
-        accuracy = metrics.accuracy_score(y_test, y_pred)
-        print("Number of features: ", i+1)
-        print("current accuracy: ", accuracy)
-    
-        if accuracy > max_accur:
-            max_accur = accuracy
-            feature_idx = pd.Series(data=rfe_fit.ranking_, index=features_df.columns)
-            selected_features = feature_idx[feature_idx == 1].index
-    
-    print("Selected features are: ", selected_features.values)
-    ####
-    
-    # Train the model:
-    # clf.fit(X_train, y_train)
-    # Predict the response for test dataset:
-    # y_pred = clf.predict(X_test)
-    print("accuracy: ", metrics.accuracy_score(y_test, y_pred))
 
-    # classification(X,y)
 
 
