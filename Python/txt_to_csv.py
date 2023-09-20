@@ -72,8 +72,8 @@ for x in range(section_num):
     curr_end_time = end_time[x].strftime("%d%m%Y_%H-%M-%S")
     print(f"Created output csv file '{curr_start_time}-{curr_end_time}' in given directory")
     if (x < len(stress_class_list)):
-        output_csv = open(f"{path_to_dir}/Ring_{curr_start_time}-{curr_end_time}_{x+1}_{stress_class_list[x]}.csv", 'w')
-    else: output_csv = open(f"{path_to_dir}/Ring_{curr_start_time}-{curr_end_time}_{x+1}.csv", 'w')
+        output_csv = open(f"{path_to_dir}/ring_{curr_start_time}_{curr_end_time}_{x+1}_{stress_class_list[x]}.csv", 'w')
+    else: output_csv = open(f"{path_to_dir}/ring_{curr_start_time}_{curr_end_time}_{x+1}.csv", 'w')
     output_csv.write(outputs[x])
     output_csv.close()
 
