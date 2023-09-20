@@ -96,21 +96,20 @@ def feature_extraction(eda_signal, fs, eda_var, decompose_method):
     dynamic_range_mean = np.nanmean(np.array(max_of_5) - np.array(min_of_5))
 
     features = pd.DataFrame([[Tonic_energy, Tonic_mean, Tonic_std, Tonic_median, Phasic_energy, Phasic_mean, Phasic_std,
-                             Phasic_median, SCR_num, SCR_mean_amplitude, SCR_mean_riseTime, SCR_mean_recoveryTime,
-                             SCR_mean_height, SCR_std_height, eda_energy, eda_mean, eda_std, eda_median, eda_max, eda_min,
-                             eda_mean_derivative_1, eda_std_derivative_1, eda_mean_derivative_2, eda_std_derivative_2,
-                             wvt_energy, wvt_mean, wvt_std, wvt_median, wvt_energy_1p5hz, wvt_mean_1p5hz, wvt_std_1p5hz,
-                             wvt_median_1p5hz, wvt_energy_0p75hz, wvt_mean_0p75hz, wvt_std_0p75hz, wvt_median_0p75hz,
-                             dynamic_range_mean]],
-                             columns=['Tonic_energy', 'Tonic_mean', 'Tonic_std', 'Tonic_median', 'Phasic_energy', 'Phasic_mean',
-                                      'Phasic_std', 'Phasic_median', 'SCR_num', 'SCR_mean_amplitude', 'SCR_mean_riseTime',
-                                      'SCR_mean_recoveryTime', 'SCR_mean_height', 'SCR_std_height', 'eda_energy', 'eda_mean', 'eda_std',
-                                      'eda_median', 'eda_max', 'eda_min', 'eda_mean_derivative_1', 'eda_std_derivative_1',
-                                      'eda_mean_derivative_2', 'eda_std_derivative_2','wvt_energy', 'wvt_mean', 'wvt_std',
-                                      'wvt_median', 'wvt_energy_1p5hz', 'wvt_mean_1p5hz', 'wvt_std_1p5hz', 'wvt_median_1p5hz',
-                                      'wvt_energy_0p75hz', 'wvt_mean_0p75hz', 'wvt_std_0p75hz', 'wvt_median_0p75hz',
-                                      'dynamic_range_mean'])
-
+                            Phasic_median, SCR_num, SCR_mean_amplitude, SCR_mean_riseTime, SCR_mean_recoveryTime,
+                            SCR_mean_height, SCR_std_height, eda_energy, eda_mean, eda_std, eda_median, eda_max, eda_min,
+                            eda_mean_derivative_1, eda_std_derivative_1, eda_mean_derivative_2, eda_std_derivative_2,
+                            wvt_energy, wvt_mean, wvt_std, wvt_median, wvt_energy_1p5hz, wvt_mean_1p5hz, wvt_std_1p5hz,
+                            wvt_median_1p5hz, wvt_energy_0p75hz, wvt_mean_0p75hz, wvt_std_0p75hz, wvt_median_0p75hz,
+                            dynamic_range_mean]],
+                            columns=['Tonic_energy', 'Tonic_mean', 'Tonic_std', 'Tonic_median', 'Phasic_energy', 'Phasic_mean',
+                                     'Phasic_std', 'Phasic_median', 'SCR_num', 'SCR_mean_amplitude', 'SCR_mean_riseTime',
+                                     'SCR_mean_recoveryTime', 'SCR_mean_height', 'SCR_std_height', 'eda_energy', 'eda_mean', 'eda_std',
+                                     'eda_median', 'eda_max', 'eda_min', 'eda_mean_derivative_1', 'eda_std_derivative_1',
+                                     'eda_mean_derivative_2', 'eda_std_derivative_2','wvt_energy', 'wvt_mean', 'wvt_std',
+                                     'wvt_median', 'wvt_energy_1p5hz', 'wvt_mean_1p5hz', 'wvt_std_1p5hz', 'wvt_median_1p5hz',
+                                     'wvt_energy_0p75hz', 'wvt_mean_0p75hz', 'wvt_std_0p75hz', 'wvt_median_0p75hz',
+                                     'dynamic_range_mean'])
     return features
 
 # features = feature_extraction(eda_signal, 3, 0.3, decompose_method='sparsEDA')

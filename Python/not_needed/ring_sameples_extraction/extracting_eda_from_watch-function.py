@@ -88,11 +88,11 @@ def extract_signal_avro(avro_files:list,user_num:int,testing=False):
         sample_indices2 = [int((ts - start_timestamp)*fs2 // 1000000) for ts in tags]
    
         for i in range(0,len(sample_indices1),2):
-            np.savetxt("eda_"+str(user_num)+"_"+str(i)+".csv", -np.array(eda[sample_indices2[i]:sample_indices2[i+1]]), delimiter=",")
-            np.savetxt("accx_"+str(user_num)+"_"+str(i)+".csv", -np.array(accx[sample_indices1[i]:sample_indices1[i+1]]), delimiter=",")
-            np.savetxt("accy_"+str(user_num)+"_"+str(i)+".csv", -np.array(accy[sample_indices1[i]:sample_indices1[i+1]]), delimiter=",")
-            np.savetxt("accz_"+str(user_num)+"_"+str(i)+".csv", -np.array(accy[sample_indices1[i]:sample_indices1[i+1]]), delimiter=",")
-            np.savetxt("bvp_"+str(user_num)+"_"+str(i)+".csv", -np.array(bvp[sample_indices1[i]:sample_indices1[i+1]]), delimiter=",")
+            np.savetxt("eda_"+str(user_num)+"_"+str(i)+".csv", np.array(eda[sample_indices2[i]:sample_indices2[i+1]]), delimiter=",")
+            np.savetxt("accx_"+str(user_num)+"_"+str(i)+".csv", np.array(accx[sample_indices1[i]:sample_indices1[i+1]]), delimiter=",")
+            np.savetxt("accy_"+str(user_num)+"_"+str(i)+".csv", np.array(accy[sample_indices1[i]:sample_indices1[i+1]]), delimiter=",")
+            np.savetxt("accz_"+str(user_num)+"_"+str(i)+".csv", np.array(accy[sample_indices1[i]:sample_indices1[i+1]]), delimiter=",")
+            np.savetxt("bvp_"+str(user_num)+"_"+str(i)+".csv", np.array(bvp[sample_indices1[i]:sample_indices1[i+1]]), delimiter=",")
     np.savetxt("eda_stamps_"+str(user_num)+"_"+str(i)+".csv",np.array(eda_stamps),delimiter=",")
     np.savetxt("bvp_stamps_"+str(user_num)+"_"+str(i)+".csv",np.array(bvp_stamps),delimiter=",")
     np.savetxt("acc_stamps_"+str(user_num)+"_"+str(i)+".csv",np.array(acc_stamps),delimiter=",")
