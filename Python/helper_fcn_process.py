@@ -4,17 +4,38 @@ import pandas as pd
 import sparsEDA
 import pywt
 
-# eda_df = pd.read_csv("C:/Lilach/Technion/Project A/09042023_10-03-44-09042023_10-06-51.csv")
-# eda_signal = eda_df["raw"].values
+def moving_avg(input, window_size):
+    result = []
+    moving_sum = sum(input[:window_size])
+    result.append(moving_sum/window_size)
+    for i in range(len(input)-window_size):
+        moving_sum += (input[i+window_size]-input[i])
+        result.append(moving_sum/window_size)
+    return result
 
-# eda_signal = pd.read_csv("C:/Lilach/Technion/Project A/EDA_V4.csv")
-# start_date_stamp = eda_signal.columns.values[0]
-# fs = eda_signal[start_date_stamp][0]
-# raw_eda = eda_signal[start_date_stamp][2:]
-# raw_eda = raw_eda.reset_index(drop=True)
+
+def preprocessing(raw_eda, fs, norm_method="Standardization", cutoff_freq=0.2, order=4, window_size=20):
+    # Filter the data:
+    filtered_eda = nk.signal_filter(raw_eda, fs, highcut=cutoff_freq, order=order, method="butterworth")
+
+    mavg_filtered_eda = moving_avg(filtered_eda, window_size)
+    # mavg_filtered_eda = filtered_eda
+
+    if norm_method == "Normalization":
+        max_val = max(mavg_filtered_eda)
+        min_val = min(mavg_filtered_eda)
+        eda = (mavg_filtered_eda - min_val) / (max_val - min_val)
+        var = np.var(eda)
+
+    elif norm_method == "Standardization":
+        var = np.var(mavg_filtered_eda)
+        mu = np.mean(mavg_filtered_eda)
+        eda = (mavg_filtered_eda - mu) / np.sqrt(var)
+
+    return eda, var
 
 
-def feature_extraction(eda_signal, fs, eda_var, decompose_method):
+def feature_extraction(eda_signal, fs, eda_var, decompose_method, amplitude_min):
     fs = int(fs)
     #extra_features_df = pd.DataFrame([]) # In case we want to extract more features using cvxEDA (not from neurokit)
 
@@ -33,27 +54,30 @@ def feature_extraction(eda_signal, fs, eda_var, decompose_method):
 
     # SCR Peaks Detection
     eda_phasic = decomposed_eda_df["EDA_Phasic"].values
-    peak_signal, peaks_info = nk.eda_peaks(eda_phasic, sampling_rate=fs, method='neurokit', amplitude_min=0.1) #amplitude_min can be changed
+    peak_signal, peaks_info = nk.eda_peaks(eda_phasic, sampling_rate=fs, method='neurokit', amplitude_min=amplitude_min) #amplitude_min can be changed
 
     #process_signals, process_info = nk.eda_process(eda_signal, sampling_rate=fs, method='neurokit')
 
     # Feature Extraction for Classification
-    Tonic_energy = np.sum(np.power(decomposed_eda_df["EDA_Tonic"], 2))
+    Tonic_energy = np.sum(np.power(decomposed_eda_df["EDA_Tonic"], 2))/len(decomposed_eda_df["EDA_Tonic"])
     Tonic_mean = np.nanmean(decomposed_eda_df["EDA_Tonic"])
     Tonic_std = np.std(decomposed_eda_df["EDA_Tonic"])
     Tonic_median = np.median(decomposed_eda_df["EDA_Tonic"])
-    Phasic_energy = np.sum(np.power(decomposed_eda_df["EDA_Phasic"], 2))
+    Phasic_energy = np.sum(np.power(decomposed_eda_df["EDA_Phasic"], 2))/len(decomposed_eda_df["EDA_Phasic"])
     Phasic_mean = np.nanmean(decomposed_eda_df["EDA_Phasic"])
     Phasic_std = np.std(decomposed_eda_df["EDA_Phasic"])
     Phasic_median = np.median(decomposed_eda_df["EDA_Phasic"])
     SCR_num = len(peaks_info["SCR_Peaks"])
-    SCR_mean_amplitude = np.nan_to_num(np.nanmean(peaks_info["SCR_Amplitude"]))
-    SCR_mean_riseTime = np.nan_to_num(np.nanmean(peaks_info["SCR_RiseTime"]))
-    SCR_mean_recoveryTime = np.nan_to_num(np.nanmean(peaks_info["SCR_RecoveryTime"]))
-    SCR_mean_height = np.nan_to_num(np.nanmean(peaks_info["SCR_Height"]))
-    SCR_std_height = np.nan_to_num(np.std(peaks_info["SCR_Height"]))
+    try:
+        SCR_mean_amplitude = np.nan_to_num(np.nanmean(peaks_info["SCR_Amplitude"]))
+        SCR_mean_riseTime = np.nan_to_num(np.nanmean(peaks_info["SCR_RiseTime"]))
+        SCR_mean_recoveryTime = np.nan_to_num(np.nanmean(peaks_info["SCR_RecoveryTime"]))
+        SCR_mean_height = np.nan_to_num(np.nanmean(peaks_info["SCR_Height"]))
+        SCR_std_height = np.nan_to_num(np.std(peaks_info["SCR_Height"]))
+    except RuntimeWarning:
+        a = 5
 
-    eda_energy = np.sum(np.power(eda_signal, 2))
+    eda_energy = np.sum(np.power(eda_signal, 2))/len(eda_signal)
     eda_mean = np.nanmean(eda_signal)
     eda_std = np.sqrt(eda_var)
     eda_median = np.median(eda_signal)
@@ -111,6 +135,3 @@ def feature_extraction(eda_signal, fs, eda_var, decompose_method):
                                      'wvt_energy_0p75hz', 'wvt_mean_0p75hz', 'wvt_std_0p75hz', 'wvt_median_0p75hz',
                                      'dynamic_range_mean'])
     return features
-
-# features = feature_extraction(eda_signal, 3, 0.3, decompose_method='sparsEDA')
-# print(features)

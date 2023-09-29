@@ -5,7 +5,7 @@ import os
 path_to_txt = input("please enter path to ring txt file: ")
 # C:/Users/yossi/Desktop/MMDataF5B57A688F87_4.txt
 # C:/Lilach/Technion/Project A/Roy Samples.txt
-# C:/Users/alonz/OneDrive - Technion/תואר/פרויקט/project - Stress Detection with a Smart Ring/samples and data/MoodMetric Ring/Roy Samples.txt
+# C:/Users/alonz/OneDrive - Technion/תואר/פרויקט/project - Stress Detection with a Smart Ring/samples and data/MoodMetric Ring/26_9_alon.txt
 txt_file_name = (os.path.basename(path_to_txt)).replace('.txt', '')
 
 path_to_dir = input("please enter path to directory: ")

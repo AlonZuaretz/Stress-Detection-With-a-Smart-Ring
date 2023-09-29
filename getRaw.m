@@ -1,9 +1,10 @@
 
 %%
-% [fileName,pathToCSV] = uigetfile('C:\Users\alonz\OneDrive - Technion\תואר\פרויקט\project - Stress Detection with a Smart Ring\samples and data\MoodMetric Ring\CSV\28_8','',[]);
-filePath_ring = "C:\Users\alonz\OneDrive - Technion\תואר\פרויקט\project - Stress Detection with a Smart Ring\samples and data\MoodMetric Ring\CSV\28_8\28082023_10-46-46-28082023_12-33-21.csv";
+% [fileName,pathToCSV] = uigetfile('C:\Users\alonz\OneDrive - Technion\תואר\פרויקט\project - Stress Detection with a Smart Ring\samples and data\MoodMetric Ring\CSV','',[]);
+filePath_ring = "C:\Users\alonz\OneDrive - Technion\תואר\פרויקט\project - Stress Detection with a Smart Ring\samples and data\MoodMetric Ring\CSV\28_8\ring_28082023_10-46-46-28082023_12-33-21_stress.csv";
+% filePath_ring = [pathToCSV, fileName] ;
 
-filePath_wrist = "C:\Users\alonz\OneDrive - Technion\תואר\פרויקט\project - Stress Detection with a Smart Ring\samples and data\Empatica New bracelet\eda_3_0.csv";
+filePath_wrist = "C:\Users\alonz\OneDrive - Technion\תואר\פרויקט\project - Stress Detection with a Smart Ring\samples and data\Empatica New bracelet\eda_3.csv";
 
 T_ring = readtable(filePath_ring);
 date_ring = T_ring.date_time;
