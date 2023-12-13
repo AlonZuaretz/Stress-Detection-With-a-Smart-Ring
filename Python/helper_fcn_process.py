@@ -1,8 +1,8 @@
 import neurokit2 as nk
 import numpy as np
 import pandas as pd
-import sparsEDA
 import pywt
+from additional_functions import sparsEDA
 
 def moving_avg(input, window_size):
     result = []

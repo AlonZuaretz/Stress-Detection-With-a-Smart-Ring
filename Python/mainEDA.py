@@ -19,12 +19,15 @@ if __name__ == "__main__":
     amplitude_min = 0.1
 
     # Classification:
+    classifier = "KNN"
+    # classifier = "SVM"
+
     # selection_method = "RFE"
     selection_method = "None"
 
     kernel = 'linear'
-    norm_flag = True
-    train_size = 0.7
+    norm_flag = False
+    train_size = 0.74
 
     # Extract data:
     EDA_files, files_num, samples_num, vids_per_CEAP, exp_str, user_exp_str = import_data()
@@ -49,7 +52,7 @@ if __name__ == "__main__":
     # features is a matrix of size M by N (or N by M) where N is the number of samples
     # and M is the number of features
 
-    # amplitude_min = np.linspace(0.01, 0.7)
+    # amplitude_min = np.linspace(0.01, 0.5, 20)
     amplitude_min = [0.1]
     accuracy = 0
     for j in range(len(amplitude_min)):
@@ -89,15 +92,16 @@ if __name__ == "__main__":
         X = np.array(features_df)
         y = np.array(labels).squeeze()
 
-        accuracy_temp = classification(X, y, kernel, norm_flag, train_size, features_df.columns, selection_method)
+        accuracy_temp = classification(X, y, kernel, norm_flag, train_size,
+                                       features_df.columns, classifier, selection_method)
         if accuracy_temp > accuracy:
             accuracy = accuracy_temp
             best_idx = j
         print(accuracy, j)
     print("best accuracy is: ", accuracy)
-    print("idx :", j)
+    print("best amplitude :", amplitude_min[best_idx])
 
-    # our_tsne(X, experiment, labels, norm_flag)
+    our_tsne(X, experiment, labels, norm_flag)
 
 
 

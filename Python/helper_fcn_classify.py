@@ -1,5 +1,6 @@
 from sklearn import svm
 from sklearn.model_selection import train_test_split
+from sklearn.neighbors import KNeighborsClassifier
 from sklearn import metrics
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.feature_selection import RFE
@@ -10,13 +11,16 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 
-def classification(X, y, kernel, norm_flag, train_size, feature_names, selection_method='None'):
+def classification(X, y, kernel, norm_flag, train_size, feature_names, classifier, selection_method='None'):
 
     test_size = 1-train_size
     # Train-Test Split:
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=test_size, train_size=train_size, shuffle=True,
                                                         random_state=5)
-    clf = svm.SVC(kernel=kernel)
+    if classifier == "SVM":
+        clf = svm.SVC(kernel=kernel)
+    elif classifier == "KNN":
+        clf = KNeighborsClassifier(n_neighbors=3)
 
     if norm_flag:
         # fit scaler on training data
