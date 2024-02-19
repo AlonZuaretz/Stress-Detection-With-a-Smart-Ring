@@ -3,6 +3,7 @@ import pandas as pd
 import json
 import os
 import glob
+from tkinter.filedialog import askdirectory
 
 
 # Documentation load_data:
@@ -36,8 +37,18 @@ def load_data(path, experiment):
         #
         if "stress" in file_name:
             label = 1
+            if "pres1" in file_name:
+                exp_type = "P1"
+            else:
+                exp_type = "P2"
+
         elif "calm" in file_name:
             label = -1
+            if "vid1" in file_name:
+                exp_type = "V1"
+            else:
+                exp_type = "V2"
+
         device = "Ring"
         participantID = folder
         df_flag = True
@@ -56,6 +67,7 @@ def load_data(path, experiment):
         elif "V1" in file_name or "V2" in file_name:
             label = -1
 
+        exp_type = ['']
         device = "Empatica E4"
         participantID = folder
         df_flag = True
@@ -73,6 +85,7 @@ def load_data(path, experiment):
         df_dict['Device'] = 'Empatica E4'
         df_dict['Participant ID'] = participantID
         df_dict['Experiment'] = experiment
+        df_dict['exp_type'] = ['']
 
         json_df = pd.json_normalize(data,  record_path=['Physio_RawData', 'Video_Physio_RawData'])
         json_df = json_df.drop(columns=['ACC_RawData', 'SKT_RawData', 'BVP_RawData', 'IBI_RawData', 'HR_RawData'])
@@ -119,22 +132,22 @@ def load_data(path, experiment):
         else:
             label = -1
 
-        df_flag = True
+        if "test" in exp_method:
+            if "T1" in file_name:
+                exp_type = "T1"
+            elif "T2" in file_name:
+                exp_type = "T2"
+            elif "T3" in file_name:
+                exp_type = "T3"
 
-    elif experiment == "ECSMP_A":
-        df = pd.read_csv(path)
-        start_date_stamp = df.columns.values[0]
-        fs = df[start_date_stamp][0]
-        raw_eda = df[start_date_stamp][2:]
-        raw_eda = raw_eda.reset_index(drop=True)
-        N_samples = len(raw_eda)
-        time_stamps = np.arange(0, N_samples) / fs
+        elif "ctrl" in exp_method:
+            if "T1" in file_name:
+                exp_type = "C1"
+            elif "T2" in file_name:
+                exp_type = "C2"
+            elif "T3" in file_name:
+                exp_type = "C3"
 
-        # TODO: determine label
-
-
-        device = "Empatica E4"
-        participantID = folder
         df_flag = True
 
 
@@ -146,11 +159,11 @@ def load_data(path, experiment):
 
         df_dict['Sample Path'] = path
         df_dict['Participant ID'] = participantID
-        # df_dict['Start Date and Time'] = start_date_stamp
         df_dict['Device'] = device
         df_dict['Number of Samples'] = N_samples
         df_dict['Sampling Rate'] = fs
         df_dict['Label'] = label
+        df_dict['exp_type'] = exp_type
         df_tmp['Time Stamps'] = time_stamps
         df_tmp['Raw EDA'] = raw_eda
         df_dict['Data'] = df_tmp
@@ -191,17 +204,9 @@ def import_data():
         exp_identifier = '.csv'
 
     # Get the path of folder:
-    # For Alon:
-    # initial_dir = "C:/Users/alonz/OneDrive - Technion/תואר/פרויקט/project" \
-    #              " - Stress Detection with a Smart Ring/samples and data/for_classification"
 
-    initial_dir = "C:/Users/alonz/OneDrive - Technion/תואר/פרויקט/project - Stress Detection with a Smart Ring/samples and data/for_classification"
 
-    # For Lilach:
-    # initial_dir = "C:/Users/yossi/OneDrive - Technion/סמסטר 6/פרויקט א/project - Stress Detection with a Smart Ring/samples and data/for_classification"
-
-    # PATH = askdirectory(initialdir=initial_dir)
-    PATH = initial_dir
+    PATH = askdirectory()
 
     # Get a list of all the files that match file identifier:
     # the for in for goes over all files in directory and its subdirectories
@@ -258,6 +263,7 @@ def extract_data(EDA_files , files_num , samples_num , vids_per_CEAP, exp_str, u
     time_stamps = [0] * samples_num
     fs = [0] * samples_num
     labels = [0] * samples_num
+    exp_type = [''] * samples_num
     experiment = [''] * samples_num
     participantID = [''] * samples_num
     device = [''] * samples_num
@@ -279,6 +285,7 @@ def extract_data(EDA_files , files_num , samples_num , vids_per_CEAP, exp_str, u
                 time_stamps[j + vidIdx] = eda_dict[i][vidID]['Data']['Time Stamps']
                 fs[j + vidIdx] = eda_dict[i]['Sampling Rate']
                 labels[j + vidIdx] = eda_dict[i][vidID]['Label']
+                exp_type[j + vidIdx] = eda_dict[i]['exp_type']
                 experiment[j + vidIdx] = eda_dict[i]['Experiment']
                 participantID[j + vidIdx] = eda_dict[i]['Participant ID']
                 device[j + vidIdx] = eda_dict[i]['Device']
@@ -289,8 +296,9 @@ def extract_data(EDA_files , files_num , samples_num , vids_per_CEAP, exp_str, u
             time_stamps[j] = eda_dict[i]['Data']['Time Stamps']
             fs[j] = eda_dict[i]['Sampling Rate']
             labels[j] = eda_dict[i]['Label']
+            exp_type[j] = eda_dict[i]['exp_type']
             experiment[j] = eda_dict[i]['Experiment']
             participantID[j] = eda_dict[i]['Participant ID']
             device[j] = eda_dict[i]['Device']
             j += 1
-    return raw_eda, fs, labels, experiment
+    return raw_eda, fs, labels, experiment, participantID, exp_type

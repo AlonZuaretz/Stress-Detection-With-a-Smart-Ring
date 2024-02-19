@@ -4,40 +4,27 @@ import pandas as pd
 import pywt
 from additional_functions import sparsEDA
 
-def moving_avg(input, window_size):
-    result = []
-    moving_sum = sum(input[:window_size])
-    result.append(moving_sum/window_size)
-    for i in range(len(input)-window_size):
-        moving_sum += (input[i+window_size]-input[i])
-        result.append(moving_sum/window_size)
-    return result
 
-
-def preprocessing(raw_eda, fs, norm_method="Standardization", cutoff_freq=0.2, order=4, window_size=20):
+def preprocessing(raw_eda, fs, norm_method="Standardization", cutoff_freq=0.2, order=4):
     # Filter the data:
     filtered_eda = nk.signal_filter(raw_eda, fs, highcut=cutoff_freq, order=order, method="butterworth")
 
-    mavg_filtered_eda = moving_avg(filtered_eda, window_size)
-    # mavg_filtered_eda = filtered_eda
-
     if norm_method == "Normalization":
-        max_val = max(mavg_filtered_eda)
-        min_val = min(mavg_filtered_eda)
-        eda = (mavg_filtered_eda - min_val) / (max_val - min_val)
+        max_val = max(filtered_eda)
+        min_val = min(filtered_eda)
+        eda = (filtered_eda - min_val) / (max_val - min_val)
         var = np.var(eda)
 
     elif norm_method == "Standardization":
-        var = np.var(mavg_filtered_eda)
-        mu = np.mean(mavg_filtered_eda)
-        eda = (mavg_filtered_eda - mu) / np.sqrt(var)
+        var = np.var(filtered_eda)
+        mu = np.mean(filtered_eda)
+        eda = (filtered_eda - mu) / np.sqrt(var)
 
     return eda, var
 
 
 def feature_extraction(eda_signal, fs, eda_var, decompose_method, amplitude_min):
     fs = int(fs)
-    #extra_features_df = pd.DataFrame([]) # In case we want to extract more features using cvxEDA (not from neurokit)
 
     # Phasic and Tonic Decomposition
     if decompose_method == 'highpass':
@@ -55,8 +42,6 @@ def feature_extraction(eda_signal, fs, eda_var, decompose_method, amplitude_min)
     # SCR Peaks Detection
     eda_phasic = decomposed_eda_df["EDA_Phasic"].values
     peak_signal, peaks_info = nk.eda_peaks(eda_phasic, sampling_rate=fs, method='neurokit', amplitude_min=amplitude_min) #amplitude_min can be changed
-
-    #process_signals, process_info = nk.eda_process(eda_signal, sampling_rate=fs, method='neurokit')
 
     # Feature Extraction for Classification
     Tonic_energy = np.sum(np.power(decomposed_eda_df["EDA_Tonic"], 2))/len(decomposed_eda_df["EDA_Tonic"])

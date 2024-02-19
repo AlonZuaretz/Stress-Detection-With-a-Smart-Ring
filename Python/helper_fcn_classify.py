@@ -11,7 +11,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 
-def classification(X, y, kernel, norm_flag, train_size, feature_names, classifier, selection_method='None'):
+def classification(X, y, kernel, norm_flag, train_size, feature_names, classifier, selection_method='None', K='5'):
 
     test_size = 1-train_size
     # Train-Test Split:
@@ -20,7 +20,7 @@ def classification(X, y, kernel, norm_flag, train_size, feature_names, classifie
     if classifier == "SVM":
         clf = svm.SVC(kernel=kernel)
     elif classifier == "KNN":
-        clf = KNeighborsClassifier(n_neighbors=3)
+        clf = KNeighborsClassifier(n_neighbors=K)
 
     if norm_flag:
         # fit scaler on training data
@@ -57,14 +57,12 @@ def classification(X, y, kernel, norm_flag, train_size, feature_names, classifie
 
     elif selection_method == "EFS":
         # Exhaustive Feature Selection
-        efs1 = EFS(clf, min_features=2, max_features=5, scoring='accuracy', print_progress=True)
+        efs1 = EFS(clf, min_features=20, max_features=X.shape[1] - 5, scoring='accuracy', print_progress=True)
         efs1 = efs1.fit(X_train, y_train)
 
         print('Best accuracy score: %.2f' % efs1.best_score_)
         print('Best subset (indices):', efs1.best_idx_)
         print('Best subset (corresponding names):', efs1.best_feature_names_)
-        y_pred = efs1.predict(X_test)
-        print("accuracy: ", metrics.accuracy_score(y_test, y_pred))
 
     elif selection_method == 'None':
         # Train the model:
@@ -76,7 +74,7 @@ def classification(X, y, kernel, norm_flag, train_size, feature_names, classifie
         return accuracy
 
 
-def our_tsne(X, experiment, labels, norm_flag):
+def our_tsne(X, experiment, exp_type, participantID, labels, norm_flag):
 
     if norm_flag:
         # fit scaler on training data
@@ -86,21 +84,26 @@ def our_tsne(X, experiment, labels, norm_flag):
 
     tsne = TSNE(n_components=2, random_state=5)
     tsne_results = tsne.fit_transform(X)
-
+    x = tsne_results[:, 0]
+    y = tsne_results[:, 1]
 
     df_subset = pd.DataFrame()
-    df_subset['tsne-2d-one'] = tsne_results[:, 0]
-    df_subset['tsne-2d-two'] = tsne_results[:, 1]
+    df_subset['tsne-2d-one'] = x
+    df_subset['tsne-2d-two'] = y
     df_subset['experiment'] = experiment
     df_subset['labels'] = labels
+
     plt.figure(figsize=(16, 10))
-    sns.scatterplot(
+    ax = sns.scatterplot(
         x="tsne-2d-one", y="tsne-2d-two",
         hue='experiment',
         style='labels',
         palette=sns.color_palette("hls", 10),
         data=df_subset,
+        s=200,
         legend="full",
         alpha=1
     )
+    plt.legend(fontsize=20)
     plt.show()
+
